@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Gallery } from "react-grid-gallery";
-import { FaArrowRightLong, FaDownload } from "react-icons/fa6";
+import { FaArrowRightLong } from "react-icons/fa6";
 import JSZip from "jszip";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -12,6 +12,7 @@ const IndexPage = () => {
   const [images, setImages] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false); // State to track if form is submitted
 
   const handleInputChange = (event) => {
     const inputUrl = event.target.value;
@@ -30,11 +31,12 @@ const IndexPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!url.trim()) {
-      showError("Please paste a Google Docs URL");
+      setError("Please paste a Google Docs URL");
+      setError("");
       return;
     }
     if (!docsId) {
-      showError("Please paste a valid Google Docs URL.");
+      setError("Please paste a valid Google Docs URL.");
       return;
     }
     setLoading(true);
@@ -47,88 +49,33 @@ const IndexPage = () => {
       }
       const data = await response.json();
 
-      const fetchedImgs = data.images.map((image, index) => ({
-        src: image,
-        thumbnail: image,
-        thumbnailWidth: 320,
-        thumbnailHeight: 212,
-        isSelected: false,
-        customOverlay: (
-          <div className="overlay flex justify-end items-end absolute bottom-0 right-0 p-4">
-            <a
-              href={image}
-              download="image.jpg"
-              className="download-btn"
-            >
-              <FaDownload />
-            </a>
-          </div>
-        ),
-      }));
+      if (data.images.length === 0) {
+        setError("No Images Found!");
+        return;
+      }
+
+      const fetchedImgs = data.images.map((image, index) => {
+        let mimeType = image.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];
+        let imgExt = mimeType.split("/")[1];
+
+        const imgName = `image_${index + 1}.${imgExt}`;
+
+        return {
+          src: image,
+          thumbnail: image,
+          thumbnailWidth: 320,
+          thumbnailHeight: 212,
+          isSelected: false,
+        };
+      });
       setImages(fetchedImgs);
+      setIsSubmitted(true); // Set isSubmitted to true after successfully fetching images
       toast.success("Images fetched successfully!");
     } catch (error) {
       console.error("Error fetching images:", error);
-      showError("Error fetching images. Please try again.");
+      setError("Error fetching images. Please try again.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const showError = (errorMessage) => {
-    setError(errorMessage);
-    toast.error(errorMessage);
-  };
-
-
-  const handleImageDownload = async (index) => {
-    try {
-      const imageUrl = images[index].src; // Get the image URL from the images array
-      console.log("Image URL:", imageUrl);
-      if (typeof imageUrl !== "string") {
-        throw new Error("Invalid image URL");
-      }
-  
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-  
-      // Get the image extension dynamically
-      const imgExtMatch = imageUrl.match(/\.([0-9a-z]+)(?:[\?#]|$)/i);
-      let imgExt = 'jpg'; // Default to jpg if extension cannot be extracted
-      if (imgExtMatch) {
-        imgExt = imgExtMatch[1];
-      }
-  
-      // Create a blob URL for the image blob
-      const blobUrl = URL.createObjectURL(blob);
-  
-      // Create an anchor element to trigger the download
-      const link = document.createElement("a");
-      link.href = blobUrl;
-  
-      // Set appropriate download file name based on image extension
-      let fileName = "image";
-      if (imgExt) {
-        fileName += `.${imgExt}`;
-      }
-  
-      link.setAttribute("download", fileName);
-      link.style.display = "none";
-  
-      // Append the anchor element to the document body
-      document.body.appendChild(link);
-  
-      // Simulate click event to trigger the download
-      link.click();
-  
-      // Remove the anchor element from the document body
-      document.body.removeChild(link);
-  
-      // Clean up the object URL after download
-      URL.revokeObjectURL(blobUrl);
-    } catch (error) {
-      console.error("Error downloading image:", error);
-      showError("Error downloading image. Please try again.");
     }
   };
 
@@ -141,26 +88,42 @@ const IndexPage = () => {
     setSelectAll(!selectAll);
   };
 
+  const handleSelect = (index, item, event) => {
+    const nextImages = images.map((image, i) =>
+      i === index ? { ...image, isSelected: !image.isSelected } : image
+    );
+    setImages(nextImages);
+    if (nextImages.length === 0) {
+      setSelectAll(false);
+    } else {
+      setSelectAll(true);
+    }
+  };
+
   const handleDownloadZip = () => {
     const selectedImages = images.filter((image) => image.isSelected);
     if (selectedImages.length === 0) {
-      showError("Please select images to download.");
+      setError("Please select images to download.");
       return;
     }
-  
+
     const zip = new JSZip();
     const promises = selectedImages.map((image, index) => {
       return fetch(image.src)
         .then((response) => response.blob())
         .then((blob) => {
-          zip.file(`image_${index + 1}.jpg`, blob);
+          let mimeType = image.src.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];
+          let imgExt = mimeType.split("/")[1];
+
+          const imgName = `image_${index + 1}.${imgExt}`;
+          zip.file(imgName, blob);
         })
         .catch((error) => {
           console.error("Error downloading image:", error);
-          showError("Error downloading images. Please try again.");
+          setError("Error downloading images. Please try again.");
         });
     });
-  
+
     Promise.all(promises)
       .then(() => {
         zip.generateAsync({ type: "blob" }).then((content) => {
@@ -176,15 +139,22 @@ const IndexPage = () => {
       })
       .catch((error) => {
         console.error("Error downloading images:", error);
-        showError("Error downloading images. Please try again.");
+        setError("Error downloading images. Please try again.");
       });
   };
-  
 
-  
+  const handleReset = () => {
+    setUrl("");
+    setError(""); // Clear any existing error message directly
+    setImages([]);
+    setDocsId("");
+    setSelectAll(false);
+    setIsSubmitted(false); // Set isSubmitted back to false on reset
+  };
+
   return (
-    <main className="bg-white flex flex-col justify-between min-h-screen pt-16">
-      <div className="px-4 py-8 md:px-8 lg:px-16 xl:px-32 flex-grow">
+    <main className="bg-white flex flex-col min-h-screen pt-16">
+      <div className="px-4 pt-8 md:px-8 lg:px-16 xl:px-32 ">
         <div className="max-w-lg mx-auto">
           <h1 className="text-4xl font-bold text-center text-black mb-4">
             Google Docs Image Downloader
@@ -194,17 +164,25 @@ const IndexPage = () => {
             your processes & save time.
           </p>
           <form
-            className="flex flex-col sm:flex-row items-center justify-between mb-8"
+            className="flex flex-col sm:flex-row items-center justify-between mb-2"
             onSubmit={handleSubmit}
           >
             <input
               type="url"
               placeholder="https://docs.google.com/document/d/xxxxxxxxx_xxxxxxxx/edit"
-              className="text-black max-w-lg w-full px-4 py-2 hover:border-black border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 mb-4 sm:mb-0 sm:mr-4 placeholder-gray-500 placeholder-opacity-100"
+              className="text-black max-w-lg w-full px-4 py-2 hover:border-black border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 sm:mb-0 sm:mr-4 placeholder-gray-500 placeholder-opacity-100"
               value={url}
               onChange={handleInputChange}
             />
-            {images.length === 0 && (
+            {isSubmitted ? ( // If submitted, show reset button
+              <button
+                type="button"
+                onClick={handleReset}
+                className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-purple-500 focus:outline-none focus:bg-blue-700 mt-2 sm:mt-0"
+              >
+                Reset
+              </button>
+            ) : ( // If not submitted, show submit button
               <button
                 type="submit"
                 className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-purple-500 focus:outline-none focus:bg-blue-700 mt-2 sm:mt-0"
@@ -241,18 +219,8 @@ const IndexPage = () => {
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       </div>
-
       {images.length > 0 && (
-        <div className="px-4 md:px-8 lg:px-16 xl:px-32">
-          <Gallery
-            images={images}
-            onClick={(index) => handleImageDownload(index)}
-          />
-        </div>
-      )}
-
-      {images.length > 0 && (
-        <div className="bg-white p-4 flex justify-center  w-full ">
+        <div className="bg-white sticky pt-4 flex justify-center w-full mt-10 ">
           <button
             className="bg-blue-600 text-white px-4 py-2 rounded-md mb-4 mr-4"
             onClick={handleSelectAll}
@@ -265,6 +233,11 @@ const IndexPage = () => {
           >
             Download (ZIP)
           </button>
+        </div>
+      )}
+      {images.length > 0 && (
+        <div className="px-4 md:px-8 lg:px-16 xl:px-32 ">
+          <Gallery images={images} onSelect={handleSelect} />
         </div>
       )}
     </main>
