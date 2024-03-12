@@ -182,7 +182,8 @@ const IndexPage = () => {
               >
                 Reset
               </button>
-            ) : ( // If not submitted, show submit button
+            ) : (
+              // If not submitted, show submit button
               <button
                 type="submit"
                 className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-purple-500 focus:outline-none focus:bg-blue-700 mt-2 sm:mt-0"
@@ -235,11 +236,15 @@ const IndexPage = () => {
           </button>
         </div>
       )}
-      {images.length > 0 && (
-        <div className="px-4 md:px-8 lg:px-16 xl:px-32 ">
-          <Gallery images={images} onSelect={handleSelect} />
-        </div>
-      )}
+      <div className="px-4 md:px-8 lg:px-16 xl:px-32 mb-10">
+        {" "}
+        {/* Add margin bottom here */}
+        {images.length > 0 && (
+          <div className="px-4 md:px-8 lg:px-16 xl:px-32 ">
+            <Gallery images={images} onSelect={handleSelect} />
+          </div>
+        )}
+      </div>
     </main>
   );
 };
