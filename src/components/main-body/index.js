@@ -220,7 +220,7 @@ const IndexPage = () => {
         </div>
       </div>
       {images.length > 0 && (
-        <div className="bg-white sticky pt-4 flex justify-center w-full mt-10 ">
+        <div className="bg-white sticky pt-4 flex justify-center w-full mt-10 mb-8">
           <button
             className="bg-blue-600 text-white px-4 py-2 rounded-md mb-4 mr-4"
             onClick={handleSelectAll}
