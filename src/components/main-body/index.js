@@ -3,7 +3,6 @@ import { Gallery } from "react-grid-gallery";
 import { FaArrowRightLong } from "react-icons/fa6";
 import JSZip from "jszip";
 import { toast } from "react-toastify";
-import { FaCheckCircle } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 
 const IndexPage = () => {
@@ -13,21 +12,7 @@ const IndexPage = () => {
   const [images, setImages] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false); 
-
-  const customOverlay = (isSelected, onClick) => {
-    const customSelectIcon = isSelected ? (
-      <div className="custom-select-icon">
-        <FaCheckCircle size={20} color="green" />
-      </div>
-    ) : null;
-
-    return (
-      <div className="custom-overlay" onClick={onClick}>
-        {customSelectIcon}
-      </div>
-    );
-  };
+  const [isSubmitted, setIsSubmitted] = useState(false); // State to track if form is submitted
 
   const handleInputChange = (event) => {
     const inputUrl = event.target.value;
@@ -46,52 +31,54 @@ const IndexPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!url.trim()) {
-      setError("Please paste a Google Docs URL");
-      return;
+       setError("Please paste a Google Docs URL");
+       setError(""); 
+       return;
     }
     if (!docsId) {
-      toast.error("Please Paste a Google Docs link.");
+      toast.error("Please Paste a  Google Docs link.");
       return;
     }
     setLoading(true);
     try {
-      const response = await fetch(`/api/download?docsId=${docsId}`, {
-        method: "GET",
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-
-      if (data.images.length === 0) {
-        toast.error("Please Paste a valid public Google Docs link.");
-        return;
-      }
-
-      const fetchedImgs = data.images.map((image, index) => {
-        let mimeType = image.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];
-        let imgExt = mimeType.split("/")[1];
-
-        const imgName = `image_${index + 1}.${imgExt}`;
-
-        return {
-          src: image,
-          thumbnail: image,
-          thumbnailWidth: 320,
-          thumbnailHeight: 212,
-          isSelected: false,
-        };
-      });
-      setImages(fetchedImgs);
-      setIsSubmitted(true);
-      toast.success("Images fetched successfully!");
+       const response = await fetch(`/api/download?docsId=${docsId}`, {
+         method: "GET",
+       });
+       if (!response.ok) {
+         throw new Error(`HTTP error! status: ${response.status}`);
+       }
+       const data = await response.json();
+   
+       if (data.images.length === 0) {
+         toast.error("Please Paste a valid public Google Docs link.");
+         return;
+       }
+   
+       const fetchedImgs = data.images.map((image, index) => {
+         let mimeType = image.match(/[^:]\w+\/[\w-+\d.]+(?=;|,)/)[0];
+         let imgExt = mimeType.split("/")[1];
+   
+         const imgName = `image_${index + 1}.${imgExt}`;
+   
+         return {
+           src: image,
+           thumbnail: image,
+           thumbnailWidth: 320,
+           thumbnailHeight: 212,
+           isSelected: false,
+         };
+       });
+       setImages(fetchedImgs);
+       setIsSubmitted(true); // Set isSubmitted to true after successfully fetching images
+       toast.success("Images fetched successfully!");
     } catch (error) {
-      console.error("Error fetching images:", error);
-      toast.error("Error fetching images. Please try again.");
+       console.error("Error fetching images:", error);
+       toast.error("Error fetching images. Please try again.");
     } finally {
-      setLoading(false);
+       setLoading(false);
     }
-  };
+   };
+   
 
   const handleSelectAll = () => {
     const nextImages = images.map((image) => ({
@@ -113,6 +100,10 @@ const IndexPage = () => {
       setSelectAll(true);
     }
   };
+
+
+  
+  
 
   const handleDownloadZip = () => {
     const selectedImages = images.filter((image) => image.isSelected);
@@ -165,13 +156,14 @@ const IndexPage = () => {
     setSelectAll(false);
     setIsSubmitted(false);
   };
+  
 
   return (
     <main className="bg-white flex flex-col min-h-screen pt-16">
       <div className="px-4 pt-8 md:px-8 lg:px-16 xl:px-32 ">
         <div className="max-w-lg mx-auto">
           <h1 className="text-3xl font-bold text-center text-black mb-4">
-            Download image Google Docs
+          Download image Google Docs
           </h1>
           <p className="text-center text-gray-700 mb-8">
             Downloading images from Google Docs is tedious. Use this free tool
@@ -188,7 +180,7 @@ const IndexPage = () => {
               value={url}
               onChange={handleInputChange}
             />
-            {isSubmitted ? (
+            {isSubmitted ? ( // If submitted, show reset button
               <button
                 type="button"
                 onClick={handleReset}
@@ -197,6 +189,7 @@ const IndexPage = () => {
                 Reset
               </button>
             ) : (
+              // If not submitted, show submit button
               <button
                 type="submit"
                 className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-purple-500 focus:outline-none focus:bg-blue-700 mt-2 sm:mt-0"
@@ -234,19 +227,25 @@ const IndexPage = () => {
         </div>
         <div className="flex justify-center text-black">
           Paste a Google Docs link with access level: Anyone on the internet
-          with the link can view...
+          with the link can view.
         </div>
       </div>
       {images.length > 0 && (
         <div className="bg-white sticky pt-4 flex justify-center w-full mt-10 mb-8">
-          <button
-            className={`px-4 py-2 rounded-md mb-4 mr-4 ${
-              selectAll ? "bg-red-200 text-red-800" : "bg-blue-600 text-white"
-            }`}
-            onClick={handleSelectAll}
-          >
-            {selectAll ? "Deselect All" : "Select All"}
-          </button>
+         <button
+  className={`px-4 py-2 rounded-md mb-4 mr-4 ${
+    images.some((image) => image.isSelected)
+      ? "bg-red-200 text-red-800"
+      : "bg-blue-600 text-white"
+  }`}
+  onClick={handleSelectAll}
+>
+  {images.some((image) => image.isSelected)
+    ? "Deselect All"
+    : "Select All"}
+</button>
+
+
 
           <button
             className={`px-4 py-2 rounded-md mb-4 ${
@@ -262,13 +261,11 @@ const IndexPage = () => {
         </div>
       )}
       <div className="px-4 md:px-8 lg:px-16 xl:px-32 mb-10">
+        {" "}
+        {/* Add margin bottom here */}
         {images.length > 0 && (
           <div className="px-4 md:px-8 lg:px-16 xl:px-32">
-            <Gallery
-              images={images}
-              onSelect={handleSelect}
-              customOverlay={customOverlay}
-            />
+            <Gallery images={images} onSelect={handleSelect} />
           </div>
         )}
       </div>
