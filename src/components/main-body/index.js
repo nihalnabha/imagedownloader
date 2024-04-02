@@ -3,6 +3,7 @@ import { Gallery } from "react-grid-gallery";
 import { FaArrowRightLong } from "react-icons/fa6";
 import JSZip from "jszip";
 import { toast } from "react-toastify";
+import { FaCheckCircle } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 
 const IndexPage = () => {
@@ -12,7 +13,21 @@ const IndexPage = () => {
   const [images, setImages] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false); // State to track if form is submitted
+  const [isSubmitted, setIsSubmitted] = useState(false); 
+
+  const customOverlay = (isSelected, onClick) => {
+    const customSelectIcon = isSelected ? (
+      <div className="custom-select-icon">
+        <FaCheckCircle size={20} color="green" />
+      </div>
+    ) : null;
+
+    return (
+      <div className="custom-overlay" onClick={onClick}>
+        {customSelectIcon}
+      </div>
+    );
+  };
 
   const handleInputChange = (event) => {
     const inputUrl = event.target.value;
@@ -32,11 +47,10 @@ const IndexPage = () => {
     event.preventDefault();
     if (!url.trim()) {
       setError("Please paste a Google Docs URL");
-      setError("");
       return;
     }
     if (!docsId) {
-      setError("Please paste a valid Google Docs URL.");
+      toast.error("Please Paste a Google Docs link.");
       return;
     }
     setLoading(true);
@@ -50,7 +64,7 @@ const IndexPage = () => {
       const data = await response.json();
 
       if (data.images.length === 0) {
-        setError("No Images Found!");
+        toast.error("Please Paste a valid public Google Docs link.");
         return;
       }
 
@@ -69,11 +83,11 @@ const IndexPage = () => {
         };
       });
       setImages(fetchedImgs);
-      setIsSubmitted(true); // Set isSubmitted to true after successfully fetching images
+      setIsSubmitted(true);
       toast.success("Images fetched successfully!");
     } catch (error) {
       console.error("Error fetching images:", error);
-      setError("Error fetching images. Please try again.");
+      toast.error("Error fetching images. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -144,24 +158,24 @@ const IndexPage = () => {
   };
 
   const handleReset = () => {
+    setError("");
     setUrl("");
-    setError(""); // Clear any existing error message directly
     setImages([]);
     setDocsId("");
     setSelectAll(false);
-    setIsSubmitted(false); // Set isSubmitted back to false on reset
+    setIsSubmitted(false);
   };
 
   return (
     <main className="bg-white flex flex-col min-h-screen pt-16">
       <div className="px-4 pt-8 md:px-8 lg:px-16 xl:px-32 ">
         <div className="max-w-lg mx-auto">
-          <h1 className="text-4xl font-bold text-center text-black mb-4">
-            Google Docs Image Downloader
+          <h1 className="text-3xl font-bold text-center text-black mb-4">
+            Download image Google Docs
           </h1>
           <p className="text-center text-gray-700 mb-8">
-            Download docs images in a single click. Try it now to streamline
-            your processes & save time.
+            Downloading images from Google Docs is tedious. Use this free tool
+            to download images in a click!
           </p>
           <form
             className="flex flex-col sm:flex-row items-center justify-between mb-2"
@@ -174,7 +188,7 @@ const IndexPage = () => {
               value={url}
               onChange={handleInputChange}
             />
-            {isSubmitted ? ( // If submitted, show reset button
+            {isSubmitted ? (
               <button
                 type="button"
                 onClick={handleReset}
@@ -183,7 +197,6 @@ const IndexPage = () => {
                 Reset
               </button>
             ) : (
-              // If not submitted, show submit button
               <button
                 type="submit"
                 className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-purple-500 focus:outline-none focus:bg-blue-700 mt-2 sm:mt-0"
@@ -219,29 +232,43 @@ const IndexPage = () => {
           </form>
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
+        <div className="flex justify-center text-black">
+          Paste a Google Docs link with access level: Anyone on the internet
+          with the link can view.
+        </div>
       </div>
       {images.length > 0 && (
         <div className="bg-white sticky pt-4 flex justify-center w-full mt-10 mb-8">
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-md mb-4 mr-4"
+            className={`px-4 py-2 rounded-md mb-4 mr-4 ${
+              selectAll ? "bg-red-200 text-red-800" : "bg-blue-600 text-white"
+            }`}
             onClick={handleSelectAll}
           >
             {selectAll ? "Deselect All" : "Select All"}
           </button>
+
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-md mb-4"
+            className={`px-4 py-2 rounded-md mb-4 ${
+              images.some((image) => image.isSelected)
+                ? "bg-blue-600 text-white"
+                : "bg-gray-400 text-gray-700"
+            }`}
             onClick={handleDownloadZip}
+            disabled={!images.some((image) => image.isSelected)}
           >
             Download (ZIP)
           </button>
         </div>
       )}
       <div className="px-4 md:px-8 lg:px-16 xl:px-32 mb-10">
-        {" "}
-        {/* Add margin bottom here */}
         {images.length > 0 && (
-          <div className="px-4 md:px-8 lg:px-16 xl:px-32 ">
-            <Gallery images={images} onSelect={handleSelect} />
+          <div className="px-4 md:px-8 lg:px-16 xl:px-32">
+            <Gallery
+              images={images}
+              onSelect={handleSelect}
+              customOverlay={customOverlay}
+            />
           </div>
         )}
       </div>
