@@ -225,7 +225,8 @@ const IndexPage = () => {
           </form>
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
-        <div className="flex justify-center text-black">
+        <div className="text-black max-w-lg w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 mt-2 text-sm text-center">
+
           Paste a Google Docs link with access level: Anyone on the internet
           with the link can view.
         </div>
