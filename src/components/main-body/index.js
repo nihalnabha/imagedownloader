@@ -234,7 +234,7 @@ const IndexPage = () => {
         </div>
         <div className="flex justify-center text-black">
           Paste a Google Docs link with access level: Anyone on the internet
-          with the link can view.
+          with the link can view...
         </div>
       </div>
       {images.length > 0 && (
