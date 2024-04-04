@@ -1,5 +1,8 @@
+/* eslint-disable react/no-unescaped-entities */
 import React, { useState } from "react";
+import Image from 'next/image';
 import { Gallery } from "react-grid-gallery";
+import arrowsImage from "@/images/arrows.png";
 import { FaArrowRightLong } from "react-icons/fa6";
 import JSZip from "jszip";
 import { toast } from "react-toastify";
@@ -13,6 +16,7 @@ const IndexPage = () => {
   const [selectAll, setSelectAll] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false); // State to track if form is submitted
+
 
   const handleInputChange = (event) => {
     const inputUrl = event.target.value;
@@ -102,9 +106,6 @@ const IndexPage = () => {
   };
 
 
-  
-  
-
   const handleDownloadZip = () => {
     const selectedImages = images.filter((image) => image.isSelected);
     if (selectedImages.length === 0) {
@@ -156,19 +157,23 @@ const IndexPage = () => {
     setSelectAll(false);
     setIsSubmitted(false);
   };
-  
+
+
 
   return (
     <main className="bg-white flex flex-col min-h-screen pt-16">
       <div className="px-4 pt-8 md:px-8 lg:px-16 xl:px-32 ">
         <div className="max-w-lg mx-auto">
           <h1 className="text-3xl font-bold text-center text-black mb-4">
-          Download image Google Docs
+            Download image Google Docs
           </h1>
-          <p className="text-center text-gray-700 mb-8">
-            Downloading images from Google Docs is tedious. Use this free tool
-            to download images in a click!
-          </p>
+          <div>
+            <p className="text-center text-gray-700 mb-8">
+              Downloading images from Google Docs is tedious. Use this free tool
+              to download images in a click!
+            </p>
+          </div>
+
           <form
             className="flex flex-col sm:flex-row items-center justify-between mb-2"
             onSubmit={handleSubmit}
@@ -180,7 +185,13 @@ const IndexPage = () => {
               value={url}
               onChange={handleInputChange}
             />
-            {isSubmitted ? ( // If submitted, show reset button
+          </form>
+          <div className="flex text-sm text-center text-gray-700 ">
+            Paste a Google Docs link with access level: Anyone on the internet
+            with the link can view.
+          </div>
+          <div className="flex justify-center mt-4">
+            {isSubmitted ? (
               <button
                 type="button"
                 onClick={handleReset}
@@ -189,10 +200,9 @@ const IndexPage = () => {
                 Reset
               </button>
             ) : (
-              // If not submitted, show submit button
               <button
                 type="submit"
-                className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-purple-500 focus:outline-none focus:bg-blue-700 mt-2 sm:mt-0"
+                className="flex justify-center items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-purple-500 focus:outline-none focus:bg-blue-700 mt-2 sm:mt-0 md:justify-left lg:justify-center"
                 disabled={loading}
               >
                 {loading ? (
@@ -217,35 +227,32 @@ const IndexPage = () => {
                     Processing...
                   </div>
                 ) : (
-                  "Submit"
+                  "Download Images"
                 )}
                 {!loading && <FaArrowRightLong className="ml-2" />}
               </button>
             )}
-          </form>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-        </div>
-        <div className="flex justify-center text-black">
-          Paste a Google Docs link with access level: Anyone on the internet
-          with the link can view.
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+          </div>
         </div>
       </div>
+
+
+
       {images.length > 0 && (
         <div className="bg-white sticky pt-4 flex justify-center w-full mt-10 mb-8">
-         <button
-  className={`px-4 py-2 rounded-md mb-4 mr-4 ${
-    images.some((image) => image.isSelected)
-      ? "bg-red-200 text-red-800"
-      : "bg-blue-600 text-white"
-  }`}
-  onClick={handleSelectAll}
->
-  {images.some((image) => image.isSelected)
-    ? "Deselect All"
-    : "Select All"}
-</button>
-
-
+          <button
+            className={`px-4 py-2 rounded-md mb-4 mr-4 ${
+              images.some((image) => image.isSelected)
+                ? "bg-red-200 text-red-800"
+                : "bg-blue-600 text-white"
+            }`}
+            onClick={handleSelectAll}
+          >
+            {images.some((image) => image.isSelected)
+              ? "Deselect All"
+              : "Select All"}
+          </button>
 
           <button
             className={`px-4 py-2 rounded-md mb-4 ${
@@ -261,13 +268,31 @@ const IndexPage = () => {
         </div>
       )}
       <div className="px-4 md:px-8 lg:px-16 xl:px-32 mb-10">
-        {" "}
-        {/* Add margin bottom here */}
         {images.length > 0 && (
           <div className="px-4 md:px-8 lg:px-16 xl:px-32">
             <Gallery images={images} onSelect={handleSelect} />
           </div>
         )}
+      </div>
+
+
+      <div className=" h-20 shadow-2xl rounded-lg text-black flex flex-col justify-center items-center mt-12">
+        <p>Card Section</p>
+      </div>
+
+      <div className="pb-8 mt-12">
+        <div className=" text-xl font-bold text-center text-gray-800 mb-4">
+          <h4>  🤔 Questions or suggestions? Contact Us</h4>
+        </div>
+        <p class="text-black flex justify-center">
+          Found a bug or need more features? Contact us at
+          <a
+            href="mailto:hey@typeflo.io"
+            class="text-blue-500 hover:text-blue-700 ml-2"
+          >
+            hey@typeflo.io
+          </a>
+        </p>
       </div>
     </main>
   );
