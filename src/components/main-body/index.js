@@ -276,26 +276,48 @@ const IndexPage = () => {
       </div>
 
 
-      <div className=" h-20 shadow-2xl rounded-lg text-black flex flex-col justify-center items-center mt-12">
-        <p>Card Section</p>
-      </div>
+      <div className=" h-30  rounded-lg text-black flex flex-col justify-center items-center mt-12">
+      
+    </div>
 
-      <div className="pb-8 mt-12">
-        <div className=" text-xl font-bold text-center text-gray-800 mb-4">
-          <h4>  🤔 Questions or suggestions? Contact Us</h4>
-        </div>
-        <p class="text-black flex justify-center">
-          Found a bug or need more features? Contact us at
-          <a
-            href="mailto:hey@typeflo.io"
-            class="text-blue-500 hover:text-blue-700 ml-2"
-          >
-            hey@typeflo.io
-          </a>
-        </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 md:px-8 lg:px-16 xl:px-32">
+  <div class="bg-white rounded-lg p-6 transition-transform transform hover:scale-105 border border-gray-200">
+    <h3 class="text-lg font-semibold mb-2 text-gray-800 text-center">Easy Image Downloads</h3>
+    <p class="text-gray-700 mb-4 text-center">Download individual images or the entire collection with ease.</p>
+  </div>
+  
+  <div class="bg-white rounded-lg p-6 transition-transform transform hover:scale-105 border border-gray-200">
+    <h3 class="text-lg font-semibold mb-2 text-gray-800 text-center">Privacy Assured</h3>
+    <p class="text-gray-700 mb-4 text-center">Your data remains secure; we only require the Google Docs URL for extraction.</p>
+  </div>
+  
+  <div class="bg-white rounded-lg p-6 transition-transform transform hover:scale-105 flex flex-col items-center border border-gray-200">
+    <h3 class="text-lg font-semibold mb-2 text-gray-800 text-center">Faster Workflow</h3>
+    <p class="text-gray-700 mb-4 text-center">Install our Google Workspace extension for seamless image downloads.</p>
+    <a href="#" class="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 inline-block">
+      Install Extension
+    </a>
+  </div>
+</div>
+
+
+
+    <div className="pb-8 mt-12">
+      <div className="text-xl font-bold text-center text-gray-800 mb-4">
+        <h4>🤔 Questions or suggestions? Contact Us</h4>
       </div>
-    </main>
-  );
+      <p className="text-black flex justify-center">
+        Found a bug or need more features? Contact us at{" "}
+        <a
+          href="mailto:hey@typeflo.io"
+          className="text-blue-500 hover:text-blue-700 ml-2"
+        >
+          hey@typeflo.io
+        </a>
+      </p>
+    </div>
+  </main>
+);
 };
 
 export default IndexPage;
