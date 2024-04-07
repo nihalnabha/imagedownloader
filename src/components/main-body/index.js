@@ -266,44 +266,123 @@ const IndexPage = () => {
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 md:px-8 lg:px-16 xl:px-32">
-        <div class="bg-white rounded-lg p-6 transition-transform transform hover:scale-105 border border-gray-200">
-          <h3 class="text-lg font-semibold mb-2 text-gray-800 text-center">
+        <div class="p-8 border border-gray-200 rounded-lg">
+          <div class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl mx-auto">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <h2 class="uppercase mt-6 text-indigo-500 font-medium text-center mb-3">
             Easy Image Downloads
-          </h3>
-          <p class="text-gray-700 mb-4 text-center">
+          </h2>
+          <p class="font-light text-sm text-gray-500 mb-3 text-center">
             Download individual images or the entire collection with ease.
           </p>
+          <a
+            class="text-indigo-500 flex items-center justify-center hover:text-indigo-600"
+            href="#"
+          >
+            More about us icon
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </a>
         </div>
 
-        <div class="bg-white rounded-lg p-6 transition-transform transform hover:scale-105 border border-gray-200">
-          <h3 class="text-lg font-semibold mb-2 text-gray-800 text-center">
-            Privacy Assured
-          </h3>
-          <p class="text-gray-700 mb-4 text-center">
-            Your data remains secure; we only require the Google Docs URL for
-            extraction.
-          </p>
-        </div>
-
-        <div class="bg-white rounded-lg p-6 transition-transform transform hover:scale-105 flex flex-col items-center border border-gray-200">
-          <h3 class="text-lg font-semibold mb-2 text-gray-800 text-center">
-            Faster Workflow
-          </h3>
-          <p class="text-gray-700 mb-4 text-center">
-            Install our Google Workspace extension for seamless image downloads.
+        <div class="p-8 border border-gray-200 rounded-lg">
+          <div class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl mx-auto">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <h2 class="uppercase mt-6 text-indigo-500 font-medium text-center mb-3">
+            Easy Image Downloads
+          </h2>
+          <p class="font-light text-sm text-gray-500 mb-3 text-center">
+            Download individual images or the entire collection with ease.
           </p>
           <a
+            class="text-indigo-500 flex items-center justify-center hover:text-indigo-600"
             href="#"
-            class="bg-blue-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 inline-block"
           >
-            Install Extension
+            More about us icon
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
           </a>
+        </div>
+
+        <div class="p-8 border border-gray-200 rounded-lg">
+          <div class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl mx-auto">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-8 w-8"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <h2 class="uppercase mt-6 text-indigo-500 font-medium text-center mb-3">
+            Faster Workflow
+          </h2>
+          <p class="font-light text-sm text-gray-500 mb-3 text-center">
+            Install our Google Workspace extension for seamless image downloads.
+          </p>
+          <div class="flex justify-center">
+            <a
+              href="#"
+              class="bg-indigo-600 text-white px-3 py-1 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700 inline-block"
+            >
+              Install Extension
+            </a>
+          </div>
         </div>
       </div>
 
       <div className="pb-8 mt-12">
-        <div className=" text-xl font-bold text-center text-gray-800 mb-4">
-          <h4> 🤔 Questions or suggestions? Contact Us</h4>
+        <div className="text-xl font-bold text-center text-gray-800 mb-4">
+          <h4>🤔 Questions or suggestions? Contact Us</h4>
         </div>
         <p class="text-black flex justify-center">
           Found a bug or need more features? Contact us at
