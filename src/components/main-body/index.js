@@ -31,15 +31,16 @@ const IndexPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    toast.dismiss();
+
     if (!url.trim()) {
-      setError("");
-      // toast.error("Please paste a Google Docs URL");
       return;
     }
     if (!docsId) {
       toast.error("Please Paste a  Google Docs link.");
       return;
     }
+
     setLoading(true);
     try {
       const response = await fetch(`/api/download?docsId=${docsId}`, {
@@ -103,7 +104,7 @@ const IndexPage = () => {
   const handleDownloadZip = () => {
     const selectedImages = images.filter((image) => image.isSelected);
     if (selectedImages.length === 0) {
-      setError("Please select images to download.");
+      toast.error("Please select images to download.");
       return;
     }
 
@@ -144,13 +145,15 @@ const IndexPage = () => {
   };
 
   const handleReset = () => {
+
     setError("");
     setUrl("");
     setImages([]);
     setDocsId("");
     setSelectAll(false);
     setIsSubmitted(false);
-  };
+   };
+   ;
 
   return (
     <main className="bg-white flex flex-col min-h-screen pt-16">
@@ -270,103 +273,68 @@ const IndexPage = () => {
           <div class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl mx-auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-8 w-8"
-              viewBox="0 0 20 20"
+              viewBox="0 0 24 24"
               fill="currentColor"
+              class="w-6 h-6"
             >
               <path
                 fill-rule="evenodd"
-                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                d="M12 2.25a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V3a.75.75 0 0 1 .75-.75Zm-9 13.5a.75.75 0 0 1 .75.75v2.25a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5V16.5a.75.75 0 0 1 1.5 0v2.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V16.5a.75.75 0 0 1 .75-.75Z"
                 clip-rule="evenodd"
               />
             </svg>
           </div>
-          <h2 class="uppercase mt-6 text-indigo-500 font-medium text-center mb-3">
+          <h2 class="uppercase mt-6 text-indigo-700 font-medium text-center mb-3">
             Easy Image Downloads
           </h2>
-          <p class="font-light text-sm text-gray-500 mb-3 text-center">
+          <p class="font-light text-sm text-gray-700 mb-3 text-center">
             Download individual images or the entire collection with ease.
           </p>
-          <a
-            class="text-indigo-500 flex items-center justify-center hover:text-indigo-600"
-            href="#"
-          >
-            More about us icon
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </a>
         </div>
 
         <div class="p-8 border border-gray-200 rounded-lg">
           <div class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl mx-auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-8 w-8"
-              viewBox="0 0 20 20"
+              viewBox="0 0 24 24"
               fill="currentColor"
+              class="w-6 h-6"
             >
               <path
                 fill-rule="evenodd"
-                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Zm3.094 8.016a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
                 clip-rule="evenodd"
               />
             </svg>
           </div>
-          <h2 class="uppercase mt-6 text-indigo-500 font-medium text-center mb-3">
-            Easy Image Downloads
+          <h2 class="uppercase mt-6 text-indigo-700 font-medium text-center mb-3">
+            Privacy Assured
           </h2>
-          <p class="font-light text-sm text-gray-500 mb-3 text-center">
-            Download individual images or the entire collection with ease.
+          <p class="font-light text-sm text-gray-700 mb-3 text-center">
+            Your data remains secure; we only require the Google Docs URL for
+            extraction.
           </p>
-          <a
-            class="text-indigo-500 flex items-center justify-center hover:text-indigo-600"
-            href="#"
-          >
-            More about us icon
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </a>
         </div>
 
         <div class="p-8 border border-gray-200 rounded-lg">
           <div class="bg-indigo-100 rounded-full w-16 h-16 flex justify-center items-center text-indigo-500 shadow-2xl mx-auto">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-8 w-8"
-              viewBox="0 0 20 20"
+              viewBox="0 0 24 24"
               fill="currentColor"
+              class="w-6 h-6"
             >
               <path
                 fill-rule="evenodd"
-                d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z"
+                d="M9 4.5a.75.75 0 0 1 .721.544l.813 2.846a3.75 3.75 0 0 0 2.576 2.576l2.846.813a.75.75 0 0 1 0 1.442l-2.846.813a3.75 3.75 0 0 0-2.576 2.576l-.813 2.846a.75.75 0 0 1-1.442 0l-.813-2.846a3.75 3.75 0 0 0-2.576-2.576l-2.846-.813a.75.75 0 0 1 0-1.442l2.846-.813A3.75 3.75 0 0 0 7.466 7.89l.813-2.846A.75.75 0 0 1 9 4.5ZM18 1.5a.75.75 0 0 1 .728.568l.258 1.036c.236.94.97 1.674 1.91 1.91l1.036.258a.75.75 0 0 1 0 1.456l-1.036.258c-.94.236-1.674.97-1.91 1.91l-.258 1.036a.75.75 0 0 1-1.456 0l-.258-1.036a2.625 2.625 0 0 0-1.91-1.91l-1.036-.258a.75.75 0 0 1 0-1.456l1.036-.258a2.625 2.625 0 0 0 1.91-1.91l.258-1.036A.75.75 0 0 1 18 1.5ZM16.5 15a.75.75 0 0 1 .712.513l.394 1.183c.15.447.5.799.948.948l1.183.395a.75.75 0 0 1 0 1.422l-1.183.395c-.447.15-.799.5-.948.948l-.395 1.183a.75.75 0 0 1-1.422 0l-.395-1.183a1.5 1.5 0 0 0-.948-.948l-1.183-.395a.75.75 0 0 1 0-1.422l1.183-.395c.447-.15.799-.5.948-.948l.395-1.183A.75.75 0 0 1 16.5 15Z"
                 clip-rule="evenodd"
               />
             </svg>
           </div>
-          <h2 class="uppercase mt-6 text-indigo-500 font-medium text-center mb-3">
+          <h2 class="uppercase mt-6 text-indigo-700 font-medium text-center mb-3">
             Faster Workflow
           </h2>
-          <p class="font-light text-sm text-gray-500 mb-3 text-center">
+          <p class="font-light text-sm text-gray-700 mb-3 text-center">
             Install our Google Workspace extension for seamless image downloads.
           </p>
           <div class="flex justify-center">
@@ -384,11 +352,11 @@ const IndexPage = () => {
         <div className="text-xl font-bold text-center text-gray-800 mb-4">
           <h4>🤔 Questions or suggestions? Contact Us</h4>
         </div>
-        <p class="text-black flex justify-center">
-          Found a bug or need more features? Contact us at
+        <p className="text-black flex justify-center">
+          Found a bug or need more features? Contact us at{" "}
           <a
             href="mailto:hey@typeflo.io"
-            class="text-blue-500 hover:text-blue-700 ml-2"
+            className="text-blue-500 hover:text-blue-700 ml-2"
           >
             hey@typeflo.io
           </a>
