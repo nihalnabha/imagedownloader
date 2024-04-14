@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import Image from 'next/image';
 import { Gallery } from "react-grid-gallery";
-import arrowsImage from "@/images/arrows.png";
 import { FaArrowRightLong } from "react-icons/fa6";
 import JSZip from "jszip";
 import { toast } from "react-toastify";
